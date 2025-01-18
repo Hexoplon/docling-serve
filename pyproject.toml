@@ -57,12 +57,8 @@ rapidocr = ["rapidocr-onnxruntime", "onnxruntime"]
 optional = false
 
 [tool.poetry.group.pypi-torch.dependencies]
-torch = [
-  {version = "!=2.5.1+cpu" },
-]
-torchvision = [
-  {version = "!=0.20.1+cpu" },
-]
+torch = "^2.5.1"
+torchvision = "^0.20.1"
 
 [tool.poetry.group.constraints.dependencies]
 numpy = [
