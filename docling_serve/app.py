@@ -14,6 +14,8 @@ from docling.datamodel.base_models import (
 )
 from docling.datamodel.document import ConversionResult
 from docling.datamodel.pipeline_options import (
+    AcceleratorDevice,
+    AcceleratorOptions,
     EasyOcrOptions,
     OcrOptions,
     PdfPipelineOptions,
@@ -26,6 +28,9 @@ from docling_core.types.doc import DoclingDocument, ImageRefMode
 from docling_core.utils.file import resolve_remote_filename
 from fastapi import FastAPI, HTTPException, Response
 from pydantic import AnyHttpUrl, BaseModel
+import torch
+
+from docling_serve.settings import Settings
 
 
 # TODO: import enum from Docling, once it is exposed
@@ -153,6 +158,15 @@ def get_pdf_pipeline_opts(options: ConvertOptions) -> Tuple[PdfPipelineOptions, 
         generate_picture_images=options.include_images,
         images_scale=options.images_scale,
     )
+
+    accelerator_device = AcceleratorDevice.CPU
+    if torch.cuda.is_available():
+        accelerator_device = AcceleratorDevice.CUDA
+        pipeline_options.ocr_options.use_gpu = True
+    
+    accelerator_options = AcceleratorOptions(device=accelerator_device)
+
+    pipeline_options.accelerator_options = accelerator_options
 
     options_hash = hashlib.sha1(pipeline_options.model_dump_json().encode()).hexdigest()
 
