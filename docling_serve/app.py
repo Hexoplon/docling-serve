@@ -159,10 +159,8 @@ def get_pdf_pipeline_opts(options: ConvertOptions) -> Tuple[PdfPipelineOptions, 
         images_scale=options.images_scale,
     )
 
-    accelerator_device = AcceleratorDevice.CPU
-    if torch.cuda.is_available():
-        accelerator_device = AcceleratorDevice.CUDA
-        pipeline_options.ocr_options.use_gpu = True
+    accelerator_device = AcceleratorDevice.CUDA
+    pipeline_options.ocr_options.use_gpu = True
     
     accelerator_options = AcceleratorOptions(device=accelerator_device)
 
