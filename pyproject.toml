@@ -30,7 +30,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 docling = "^2.15.1"
 fastapi = {version = "^0.115.6", extras = ["standard"]}
 uvicorn = "^0.32.1"
