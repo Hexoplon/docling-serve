@@ -184,6 +184,15 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Docling Serve",
+    description="""
+    API service for running Docling document processing capabilities.
+    Supports PDF and image document processing with OCR capabilities.
+    """,
+    version="0.1.0",
+    license_info={
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT",
+    },
     lifespan=lifespan,
 )
 
@@ -276,4 +285,18 @@ def convert_document_md(
     )
     return MarkdownTextResponse(
         result.document.export_to_markdown(image_mode=image_mode)
+    )
+
+
+@app.get("/openapi.json", include_in_schema=False)
+async def get_openapi_json():
+    return app.openapi()
+
+@app.get("/openapi.yaml", include_in_schema=False)
+async def get_openapi_yaml():
+    import yaml
+    openapi_json = app.openapi()
+    return Response(
+        yaml.dump(openapi_json, sort_keys=False),
+        media_type="text/yaml"
     )

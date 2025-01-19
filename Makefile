@@ -73,3 +73,7 @@ py-lint: ##      Lint Python files
 	fi
 	$(CMD_PREFIX) poetry install --all-extras
 	$(CMD_PREFIX) poetry run pre-commit run --all-files
+
+.PHONY: openapi
+openapi: ##      Generate OpenAPI spec
+	$(CMD_PREFIX) poetry run python scripts/generate_openapi.py
